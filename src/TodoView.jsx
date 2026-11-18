@@ -10,5 +10,14 @@ import TodoList from "./TodoList.jsx";
 //   render <TodoList todos={visible} ... />
 export default function TodoView({ todos, onToggle, onDelete }) {
   // right now it ignores the filter and shows everything — fix that:
-  return <TodoList todos={todos} onToggle={onToggle} onDelete={onDelete} />;
+  const { filter } = useParams();
+  let visible;
+  if (filter === "active") {
+    visible = todos.filter(todo => !todo.done);
+  } else if (filter === "completed") {
+    visible = todos.filter(todo => todo.done);
+  } else {
+    visible = todos;
+  }
+  return <TodoList todos={visible} onToggle={onToggle} onDelete={onDelete} />;
 }

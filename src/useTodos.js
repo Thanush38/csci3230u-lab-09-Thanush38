@@ -17,12 +17,32 @@ const INITIAL_TODOS = [
 //   deleteTodo(id)  → drop the matching todo
 //   return { todos, addTodo, toggleTodo, deleteTodo }
 export function useTodos() {
-  // Placeholder so the list renders — REPLACE it. Right now `todos` is a
-  // static array and the actions do nothing; swap in useState + real updates.
-  return {
-    todos: INITIAL_TODOS,
-    addTodo: () => {},
-    toggleTodo: () => {},
-    deleteTodo: () => {},
+  const [todos, setTodos] = useState(INITIAL_TODOS);
+
+  // addTodo / toggleTodo / deleteTodo - the SAME immutable updates as Lab 08
+  const addTodo = (text) => {
+    const newTodo = {
+      id: crypto.randomUUID(),
+      text: text,
+      done: false,
+    };
+    setTodos([...todos, newTodo]);
   };
+
+  const toggleTodo = (id) => {
+    const updatedTodos = todos.map((todo) => {
+      if (todo.id === id) {
+        return { ...todo, done: !todo.done };
+      }
+      return todo;
+    });
+    setTodos(updatedTodos);
+  };
+
+  const deleteTodo = (id) => {
+    const updatedTodos = todos.filter((todo) => todo.id !== id);
+    setTodos(updatedTodos);
+  };
+
+  return { todos, addTodo, toggleTodo, deleteTodo };
 }
